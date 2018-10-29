@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="center">
+    <canvas id="canvas" width="500" height="500" style="border:2px solid black;"/>
+    </div>
+    <script>
+      function imageJS(src){
+        this.image = new Image()
+        var image = this.image
+        var loaded = false
+        image.onload = function(){
+          loaded = true;
+        }
+        image.src = src
+      }
+      
+      var canvas = document.getElementById("canvas")
+      var ctx = canvas.getContext("2d")
+      
+      var cloud = new imageJS("https://image.flaticon.com/icons/svg/53/53934.svg");
+      var sun = new imageJS("https://image.flaticon.com/icons/svg/53/53565.svg");
+      var mountain = new imageJS("https://b.kisscc0.com/20180813/gbe/kisscc0-computer-icons-mountain-symbol-sign-download-mountain-15-5b71f9b2750a02.1378998015341961464794.png");
+      var v = 0;
+      var x = 0;
+      var y = 490;
+      var keys = {
+        D:false,
+        A:false
+      }
+      var showMap = true;
+      //alert("How to play:\nThis game can be played with keys \"A\" and \"D\" to move left and right respectivly\nPress the key \"W\" to jump.")
+      scene = "intro"
+      setInterval(function(){
+        ctx.clearRect(0,0,canvas.width,canvas.height)
+        
+        if(scene == "intro"){
+        ctx.fillStyle = "#f97211"
+        ctx.fillRect(40,480,10,20)
+        ctx.fillRect(90,480,10,20)
+        ctx.fillRect(40,470,60,20)
+        ctx.textAlign = "left"
+        ctx.fillStyle = "#AAA"
+        ctx.fillRect(400,470,50,30)
+        ctx.fillStyle = "black"
+        ctx.fillText("Originalandia",40,480)
+        ctx.fillRect(430,480,10,20)
+        }
+        ctx.fillStyle = "black"
+        ctx.fillRect(x,y,10,10)
+        
+        if(scene == "weather"){
+          ctx.fillStyle ="#16f9f6"
+          //ctx.fillRect(40,485,15,15)
+        }
+        
+        v+=0.3
+        y+=v
+        if(y>490){
+          y=490
+          v = 0;
+        }
+        if(keys.A){
+          x-=5
+        }
+        if(keys.D){
+          x+=5
+        }
+        if(x<0){
+          x = 0
+        }
+        
+        if(x>490){
+          x = 490
+        }
+        
+        if (x < 430 + 10 &&
+            x + 10 > 430 &&
+            y < 480 + 20 &&
+            y + 10 > 480 && scene == "intro") {
+          // collision detected!
+          console.log("WEATHER!!")
+          scene = "weather"
+          x = 0
+          y = 490
+          v = 0
+        }
+        if(scene == "weather"){
+          if (x < 40 + 15 &&
+              x + 15 > 40 &&
+              y < 485 + 15 &&
+              y + 15 > 485) {
+            // collision detected!
+            console.log("map")
+            
+            showMap = true;
+                      }
+          if(showMap){
+            ctx.fillStyle = "blue"
+            ctx.fillRect(40,60,300,270)
+            
+            ctx.font = "20px Ariel"
+            ctx.fillStyle = "black"
+            ctx.fillText("La mer",260,270)
+
+            ctx.fillStyle ="#16f9f6"
+            ctx.beginPath()
+            ctx.moveTo(80,80)
+            ctx.lineTo(140,140)
+            ctx.lineTo(90,160)
+            ctx.lineTo(80,80)
+            ctx.fill()
+
+            ctx.fillStyle = "#00ff5d"
+            ctx.beginPath()
+            ctx.moveTo(90,160);
+            ctx.lineTo(140,140);
+            ctx.lineTo(200,200);
+            ctx.lineTo(90,160);
+            ctx.fill();
+
+            ctx.fillStyle = "#fcb102"
+            ctx.beginPath()
+            ctx.moveTo(90,160);
+            ctx.lineTo(200,200);
+            ctx.lineTo(200,300);
+            ctx.lineTo(90,160);
+            ctx.fill();
+
+            ctx.fillStyle = "#ff1414"
+            ctx.beginPath()
+            ctx.moveTo(120,120);
+            ctx.lineTo(200,200);
+            ctx.lineTo(200,300);
+            ctx.lineTo(240,160);
+            ctx.fill();
+            var gradient=ctx.createLinearGradient(80+((240-80)/2)-90,0,80+((240-80)/2)+90,0);
+            gradient.addColorStop("0","red");
+            gradient.addColorStop("0.25","orange");
+            gradient.addColorStop("0.5","green");
+            gradient.addColorStop("0.75","blue");
+            gradient.addColorStop("1.0","purple");
+            // Fill with gradient
+            ctx.fillStyle=gradient;
+            ctx.font = "40px Ariel"
+            ctx.textAlign = "center"
+            ctx.fillText("Originalandia",80+((240-80)/2),50)
+
+            ctx.drawImage(cloud.image,85,100,20,20)
+
+            ctx.drawImage(sun.image,117,180,20,20)
+
+            ctx.drawImage(mountain.image,165,230,20,20)
+            ctx.fillStyle = "black"
+            ctx.font = "10px Ariel"
+            ctx.fillText("montagnes",170,230)
+            
+            
+            ctx.strokeStyle = "blue"
+            ctx.moveTo(240,160)
+            ctx.lineTo(200,180)
+            ctx.lineTo(150,170)
+            ctx.stroke()
+            
+            ctx.fillText("fleuve",200,170)
+
+            
+            ctx.strokeStyle = "black"
+            ctx.moveTo(40,330)
+            ctx.lineTo(40,450)
+            ctx.lineTo(100,450)
+            ctx.lineTo(100,330)
+            ctx.lineTo(40,330)
+            
+            ctx.moveTo(100,330)
+            ctx.lineTo(100,450)
+            ctx.lineTo(160,450)
+            ctx.lineTo(160,330)
+            ctx.lineTo(100,330)
+            
+            ctx.moveTo(160,330)
+            ctx.lineTo(160,450)
+            ctx.lineTo(220,450)
+            ctx.lineTo(220,330)
+            ctx.lineTo(160,330)
+            
+            ctx.moveTo(220,330)
+            ctx.lineTo(220,450)
+            ctx.lineTo(280,450)
+            ctx.lineTo(280,330)
+            ctx.lineTo(220,330)
+            
+            ctx.moveTo(280,330)
+            ctx.lineTo(280,450)
+            ctx.lineTo(340,450)
+            ctx.lineTo(340,330)
+            ctx.lineTo(280,330)
+            
+            ctx.moveTo(40,355)
+            ctx.lineTo(340,355)
+            ctx.stroke();
+            
+            ctx.textAlign = "center"
+            ctx.fillText("lundi",70,350)
+            ctx.fillText("mardi",130,350)
+            ctx.fillText("mercredi",190,350)
+            ctx.fillText("jeudi",250,350)
+            ctx.fillText("vendredi",310,350)
+
+            ctx.fillText("Nord vent.",70,370)
+            ctx.fillText("Il fait du vent.",70,380)
+            
+            ctx.fillText("Il fait beau.",130,370)
+            ctx.fillText("Il fait chaud.",130,380)
+            
+            ctx.fillText("Il fait pleut",190,370)
+            ctx.fillText("à verse.",190,380)
+            ctx.fillText("Il fait mauvais.",190,395)
+
+            ctx.fillText("Il géle",250,370)
+            ctx.fillText("Il neige",250,380)
+            ctx.fillText("Il fait mauvais",250,390)
+      
+            ctx.fillText("Il fait du soleil",310,370)
+            ctx.fillText("Il fait chaud",310,380)
+          }
+        }
+        
+        
+        
+      },1000/60)
+      
+      document.onkeydown = function(e){
+        let res = String.fromCharCode(e.keyCode)
+        if(res == "W" && y==490){
+          v = -5
+        }
+        if(res == "A"){
+          keys.A = true;
+        }
+        if(res == "D"){
+          keys.D = true;
+        }
+      }
+      
+      document.onkeyup = function(e){
+        let res = String.fromCharCode(e.keyCode)
+        
+        if(res == "A"){
+          keys.A = false;
+        }
+        if(res == "D"){
+          keys.D = false;
+        }
+      }
+    </script>
+  </body>
+</html>
